@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Football Data ORG</title>
+    <meta name="description" content="My first PWA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css/materialize.min.css" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#00897B" />
+    <style>
+        table {
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigasi -->
+    <nav class="" role="navigation">
+        <div class="nav-wrapper container">
+            <a href="/index.html" class="brand-logo" id="logo-container">
+                Football Data ORG</a>
+            <a href="#" class="sidenav-trigger" data-target="nav-mobile">&#9776;</a>
+
+            <ul class="topnav right hide-on-med-and-down"></ul>
+            <ul class="sidenav" id="nav-mobile"></ul>
+        </div>
+    </nav>
+    <!-- Akhir Navigasi -->
+
+    <div class='container'>
+        <h2>Add Competitions</h2>
+        <div class="row">
+            <form>
+                <label for="bookId">Id Competitions: </label>
+                <input id="bookId" type="number" required placeholder="Example: 2001">
+
+                <label for="bookName">name: </label>
+                <input id="bookName" type="text" required placeholder="Example: WC Qualification">
+
+                <label for="bookAuthor">lastUpdated: </label>
+                <input id="bookAuthor" type="text" required placeholder="Example: 2001-01-01">
+
+                <button onclick="insertBook()" class="btn waves-effect waves-light" type="submit" name="action">Save
+                </button>
+            </form>
+            <table class="striped">
+                <thead>
+                    <tr>
+                        <th>Id Buku</th>
+                        <th>name</th>
+                        <th>lastUpdated</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="booksRow"></tbody>
+            </table>
+        </div>
+    </div>c
+
+    <div class="fixed-action-btn">
+        <a href='/index.html' class="btn-floating btn-large blue" id="save"> Home</a>
+    </div>
+
+    <script src="js/materialize.min.js"></script>
+    <script src="js/idb.js"></script>
+    <script src="js/db-controller.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        });
+        const booksRow = document.querySelector("#booksRow");
+        const inputBookId = document.querySelector("#bookId");
+        const inputBookName = document.querySelector("#bookName");
+        const inputBookAuthor = document.querySelector("#bookAuthor");
+
+        function insertBook() {
+            const book = {
+                bookId: inputBookId.value,
+                bookName: inputBookName.value,
+                bookAuthor: inputBookAuthor.value
+            };
+
+            dbInsertBook(book).then(() => {
+                showAllBook()
+            })
+        }
+
+        function showAllBook() {
+            dbGetAllBook().then(books => {
+                let listBooksInText = "";
+                books.forEach(book => {
+                    listBooksInText += `
+               <tr>
+                 <td>${book.bookId}</td>
+                 <td>${book.bookName}</td>
+                 <td>${book.bookAuthor}</td>
+                 <td><button id="${book.bookId}" class="removeButton btn red">Remove</button></td>
+               </tr>
+               `;
+                });
+                booksRow.innerHTML = listBooksInText;
+
+                let removeButtons = document.querySelectorAll(".removeButton");
+                for (let button of removeButtons) {
+                    button.addEventListener("click", function (event) {
+                        let bookId = event.target.id;
+                        dbDeleteBook(bookId).then(() => {
+                            showAllBook()
+                        })
+                    })
+                }
+            })
+        }
+
+        showAllBook()
+    </script>
+</body>
+
+</html>
