@@ -26,8 +26,6 @@
 
   <div class="container" id="body-content"></div>
 
-
-
   <script src="js/materialize.min.js"></script>
   <script src="js/idb.js"></script>
   <script src="js/db.js"></script>
@@ -53,6 +51,7 @@
           console.error('Registrasi service worker gagal.', err);
         });
     }
+      
     // First Request API
     document.addEventListener("DOMContentLoaded", function () {
       const page = window.location.hash.substr(1);
