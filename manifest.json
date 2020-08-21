@@ -8,9 +8,10 @@
     "theme_color": "#00897B",
     "icons": [
         {
-            "src": "football.png",
+            "src": "maskable_icon.png",
             "sizes": "512x512",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any maskable"
         }
     ],
     "gcm_sender_id": "360637671937"
